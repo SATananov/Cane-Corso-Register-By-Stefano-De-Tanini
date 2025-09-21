@@ -1,28 +1,35 @@
 name: Supabase DB Push
 
 on:
+  workflow_dispatch:        # 👉 дава бутон "Run workflow"
   push:
-    branches: [ "main" ]
-  workflow_dispatch:
+    paths:
+      - "supabase/migrations/**"   # пуска се и при промени по миграциите
+    branches:
+      - main
 
 jobs:
-  db-push:
+  push-db:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
         with:
-          version: latest  # или конкретна версия, напр. v1.181.5
+          version: latest
 
       - name: Link project
-        run: supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF:  ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          supabase link --project-ref "$SUPABASE_PROJECT_REF" --access-token "$SUPABASE_ACCESS_TOKEN"
 
       - name: Push migrations
-        run: supabase db push
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          supabase db push --include-all
