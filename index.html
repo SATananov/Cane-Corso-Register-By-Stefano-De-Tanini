@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Регистър Cane Corso — България</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🐾</span>
+      <div>
+        <h1>Регистър CANE CORSO — България</h1>
+        <p class="tag">“UNA QUAE<span class="thin">DAM</span>” — A UNIQUE ONE</p>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a href="#/" data-link>Начало</a>
+      <a href="#/catalog" data-link>Каталог</a>
+      <a href="#/admin" data-if-admin data-link>Админ</a>
+      <span class="spacer"></span>
+      <button id="btn-login" data-if-logged-out class="btn">Вход</button>
+      <button id="btn-register" data-if-logged-out class="btn primary">Регистрация</button>
+      <div data-if-logged-in class="userbox">
+        <span id="me-name"></span>
+        <button id="btn-logout" class="btn ghost">Изход</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="app">
+    <!-- Home -->
+    <section id="view-home" class="view">
+      <div class="hero">
+        <div class="hero-text">
+          <h2>Официален публичен регистър на Cane Corso в България</h2>
+          <p>Посетителите разглеждат одобрените профили; потребителите публикуват нови; администраторите управляват съдържанието.</p>
+          <div class="cta">
+            <a href="#/catalog" class="btn primary">Виж каталога</a>
+            <button id="cta-new" class="btn" data-if-logged-in>+ Нов запис</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Формата за нов запис (само логнати) -->
+      <form id="form-new-dog" class="card" data-if-logged-in hidden>
+        <h3>Нов запис (ще изисква одобрение)</h3>
+        <div class="grid">
+          <label>Име*<input name="name" required></label>
+          <label>Пол*
+            <select name="sex" required>
+              <option value="male">мъжко</option>
+              <option value="female">женско</option>
+            </select>
+          </label>
+          <label>Дата на раждане*<input type="date" name="date_of_birth" required></label>
+          <label>Цвят<input name="color" placeholder="черно / сиво / фауън …"></label>
+          <label>Микрочип<input name="microchip_number" pattern="\\d{10,20}" title="10–20 цифри"></label>
+          <label>№ родословие<input name="pedigree_number"></label>
+        </div>
+        <label>Бележки<textarea name="notes" rows="3"></textarea></label>
+        <div class="right">
+          <button class="btn primary">Публикувай (pending)</button>
+        </div>
+        <p class="hint">След изпращане записът е със статус <strong>pending</strong> и е видим публично след одобрение от администратор.</p>
+        <div id="new-dog-msg" class="msg" hidden></div>
+      </form>
+    </section>
+
+    <!-- Catalog -->
+    <section id="view-catalog" class="view" hidden>
+      <h2>Каталог (одобрени)</h2>
+      <div id="catalog-list" class="cards"></div>
+    </section>
+
+    <!-- Admin -->
+    <section id="view-admin" class="view" hidden>
+      <h2>Админ — чакащи за одобрение</h2>
+      <div id="pending-list" class="cards"></div>
+    </section>
+  </main>
+
+  <!-- Login modal -->
+  <dialog id="dlg-login">
+    <form method="dialog" id="login-form" class="dialog">
+      <h3>Вход</h3>
+      <p class="muted">Може да влезеш с потребителско име <em>или</em> email и парола.</p>
+      <label>Потребителско име / Email*<input name="user" required autocomplete="username"></label>
+      <label>Парола*<input type="password" name="password" required autocomplete="current-password"></label>
+      <div class="actions">
+        <button value="cancel" class="btn ghost">Отказ</button>
+        <button class="btn primary">Вход</button>
+      </div>
+      <div id="login-msg" class="msg" hidden></div>
+    </form>
+  </dialog>
+
+  <!-- Register modal -->
+  <dialog id="dlg-register">
+    <form method="dialog" id="register-form" class="dialog">
+      <h3>Създай акаунт</h3>
+      <div class="grid">
+        <label>Име за показване*<input name="display_name" required></label>
+        <label>Потребителско име*<input name="username" required></label>
+        <label>Email*<input type="email" name="email" required autocomplete="email"></label>
+        <label>Парола*<input type="password" name="password" required autocomplete="new-password"></label>
+      </div>
+      <p class="muted">Влизането впоследствие може и само с <strong>потребителско име</strong> + парола.</p>
+      <div class="actions">
+        <button value="cancel" class="btn ghost">Отказ</button>
+        <button class="btn primary">Създай акаунт</button>
+      </div>
+      <div id="register-msg" class="msg" hidden></div>
+    </form>
+  </dialog>
+
+  <footer class="footer">
+    © 2025 Cane Corso Registry BG · MIT
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
